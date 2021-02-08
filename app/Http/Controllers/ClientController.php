@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ClientController extends Controller
 {
@@ -15,6 +16,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::latest()->paginate(5);
+        
         return view ('clients.index',compact('clients'))
         ->with('i',(request()->input('page',1) -1) *5);
     }
@@ -38,10 +40,10 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         Client::create($request->all());
-     
-        return redirect()->route('clients.index');
+       
 
-    
+                        return redirect()->route('clients.index')
+                        ->with('client_added','Client a été créé avec succès');
       
     }
 
@@ -92,6 +94,7 @@ class ClientController extends Controller
         //
         $client->delete();
     
-        return redirect()->route('clients.index');
+        return redirect()->route('clients.index')->with('client_deleted','Client a été supprimé avec succès');
+       
     }
 }

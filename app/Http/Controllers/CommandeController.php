@@ -16,15 +16,15 @@ class CommandeController extends Controller
      */
     public function index()
     {
-        $clients = Client:: orderby('id','asc')->get();
-        $articles = Article:: orderby('id','asc')->get();
-        $etats = Etat:: orderby('id','asc')->get();
+        $clients = Client::get();
+        $articles = Article::get();
+        $etats = Etat::get();
+      
         $commandes = Commande::latest()->paginate(5);
         return view ('home',compact('commandes'))->with('clients', $clients)->with('articles', $articles)
-        ->with('etats', $etats)->with('i',(request()->input('page',1) -1) *5);
+        ->with('etats', $etats);
 
-        
-
+      
     }
 
     /**
@@ -35,7 +35,7 @@ class CommandeController extends Controller
     public function create()
     {
         //
-        
+     
     }
 
     /**
@@ -46,9 +46,10 @@ class CommandeController extends Controller
      */
     public function store(Request $request)
     {
+        
         Commande::create($request->all());
      
-        return redirect()->route('home');
+        return redirect()->route('home')->with('commande_added','Commande a été créée avec succès');
 
     }
 
