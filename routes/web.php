@@ -33,3 +33,11 @@ Route::resource('posts', App\Http\Controllers\PostController::class);
 
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home', [App\Http\Controllers\CommandeController::class, 'index'])->name('home');
+
+
+Route::get('/dashboard', [App\Http\Controllers\CommandeController::class, 'index'])->name('home');
+
+Route::resource('articles',App\Http\Controllers\ArticleController::class);
+Route::get('/articles/{id}/edit/', 'App\Http\Controllers\ArticleController@edit');
+
+Route::get('/clients/{id}/edit/', 'App\Http\Controllers\ClientController@edit');

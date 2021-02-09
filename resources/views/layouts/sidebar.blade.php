@@ -42,6 +42,17 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('articles.index') }}" 
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="flaticon-bar-chart"></i>
+                    <span>Articles</span>
+                     <!-- Counter - Alerts -->
+            
+                </a>
+
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ route('clients.index') }}" 
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="flaticon-user"></i>

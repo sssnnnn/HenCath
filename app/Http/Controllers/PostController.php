@@ -66,9 +66,22 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+      Post::updateOrCreate(
+       [
+        'id' => $id
+       ],
+       [
+        'title' => $request->title,
+       ],
+       [
+        'description' => $description
+       ]
+      );
+
+      return response()->json([ 'success' => true ]);
+
     }
 
     /**
@@ -78,9 +91,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         //
+        $post = Post::find($id);
+
+	    return response()->json([
+	      'data' => $post
+	    ]);
     }
 
     /**

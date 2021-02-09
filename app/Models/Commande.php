@@ -26,7 +26,7 @@ class Commande extends Model
     }
 
     protected $fillable = [
-        'reference', 'description', 'type','plan','quantite','ville_pose','pays','livraison_prevue','client_id', 
+        'reference', 'description', 'type','commentaire','plan','quantite','ville_pose','pays','livraison_prevue','client_id', 
           'article_id','etat_id'
     ];
 

@@ -22,9 +22,12 @@ class CreateCommandesTable extends Migration
             $table->integer('quantite');
             $table->string('ville_pose');
             $table->string('pays');
+            $table->string('commentaire');
             $table->date('livraison_prevue');
             $table->boolean('plan')->nullable();
             $table->unsignedBigInteger('client_id');
+            $table->timestamp('date_creation_commande');
+            $table->String('priorite');
             $table->foreign('client_id')
                 ->references('id')
                 ->on('clients')

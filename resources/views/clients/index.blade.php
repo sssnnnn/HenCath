@@ -23,8 +23,10 @@
     <link href="{{asset('assets/font/flaticon.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" />
-	
-
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -111,9 +113,7 @@
 
                                             <input class="form-control" id="telephone" name="telephone" placeholder="Telephone" >
 
-                                            </div>
-
-                                           
+                                            </div>                                     
 
                                         </div>
                        
@@ -167,7 +167,6 @@
   </div>
 </div>
 
-
                 
                     <div class="table-responsive">
   
@@ -179,25 +178,24 @@
                                 <th>Prenom</th>
                                 <th>Email</th>
                                 <th>Actions</th>
-                               
-
-
+  
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                @foreach($clients as $client => $value)
-                               <tr>
-                                  <td>{{ ++$i }}</td>
-                                  <td>{{ $value->nom }}</td>
-                                  <td>{{ $value->prenom }}</td>
-                                  <td>{{ $value->email }}</td>
+                                @foreach($clients as $client )
+                               <tr id="client_id_{{ $client->id }}">
+                                  <td>{{ $client->id }}</td>
+                                  <td>{{ $client->nom }}</td>
+                                  <td>{{ $client->prenom }}</td>
+                                  <td>{{ $client->email }}</td>
                                   <td>
-                                  <form action="{{ route('clients.destroy',$value->id) }}" method="POST">   
+
+
+  <form action="{{ route('clients.destroy',$client->id) }}" method="POST">   
+     <a href="javascript:void(0)" class="btn btn-success" id="edit-client" data-toggle="modal" data-id="{{ $client->id }}"><i class="fa fa-pencil-alt" aria-hidden="true"></i> </a>
+               <meta name="csrf-token" content="{{ csrf_token() }}">                  
                      
-                    <a class="btn btn-info"  href="{{ route('clients.edit',$value->id) }}">
-                    <i class="fa fa-pencil-alt" aria-hidden="true"></i>
-                    </a>   
                     @csrf
                     @method('DELETE')      
                     <button type="submit" class="btn btn-danger">
@@ -218,7 +216,136 @@
                        
                        
                     </div>
-                      
+    
+ <!--Edit Modal -->
+<div class="modal fade" id="crud-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Fiche client</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+     
+      <form action="{{ route('clients.store') }}" method= "POST">
+
+         {{ csrf_field() }}
+                                    <input type="hidden" name="client_id" id="client_id">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-4 mb-3">
+                                               
+                                            <input type="text" class="form-control" id="e-nom" name="nom" placeholder="Nom">
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-4  mb-3">
+
+                                                
+                                            <input class="form-control" id="e-prenom" name="prenom" placeholder="Prenom" >
+                                            </div>
+
+                                            <div class="col-sm-12 col-md-4">
+
+                                            <input class="form-control" id="e-email" name="email" placeholder="Email" >
+
+                                            </div>
+                                            <div class="col-sm-12 col-md-4">
+
+                                            <input class="form-control" id="e-telephone" name="telephone" placeholder="Telephone" >
+
+                                            </div>                                     
+
+                                        </div>
+                       
+
+
+
+                                        <div class="mb-3 options">
+                                            <input type="text" class="form-control" id="e-adresse" name="adresse" placeholder="Adresse">
+                                        </div>
+
+                                        <div class="row options">
+                                            <div class="col-6">
+                                                
+                                                <input type="text" class="form-control" id="e-pays" name="pays" placeholder="Pays">
+                                            </div>
+
+                                            <div class="col-6">
+                                                
+                                                <input type="text" class="form-control" id="e-ville" name="ville" placeholder="Ville">
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="row options">
+                                          
+                                            <div class="col-6">
+                                                
+                                                <input type="text" class="form-control" id="e-code_postal" name="code_postal" placeholder="Code Postal">
+                                            </div>
+
+                                    </div>
+ 
+                                   
+                                   
+      </div>
+     
+
+        <div class="col-md-12 text-center">
+              
+                 <button type="submit" class="submit-btn mt-4 ">Sauvegarder</button>
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ANNULER</button>
+                 <br>
+                <br>
+              
+         </div>
+        
+   
+      </form>
+    </div>
+  </div>
+</div>
+ <!--And Edit Modal -->
+                  
+<!-- Add and Edit customer modal -->
+<div class="modal fade" id="crud-modal" aria-hidden="true" >
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h4 class="modal-title" id="clientCrudModal"></h4>
+</div>
+<div class="modal-body">
+<form name="cltForm" action="{{ route('clients.store') }}" method="POST">
+<input type="hidden" name="clt_id" id="clt_id" >
+@csrf
+<div class="row">
+<div class="col-xs-12 col-sm-12 col-md-12">
+<div class="form-group">
+<strong>Name:</strong>
+<input type="text" name="nom" id="e-nom" class="form-control" placeholder="Nom" onchange="validate()" >
+</div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-12">
+<div class="form-group">
+<strong>Prenom:</strong>
+<input type="text" name="prenom" id="e-prenom" class="form-control" placeholder="Prenom" onchange="validate()">
+</div>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 text-center">
+<button type="submit" id="btn-save" name="btnsave" class="btn btn-primary" disabled>Submit</button>
+<a href="{{ route('clients.index') }}" class="btn btn-danger">Cancel</a>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+
 
                 
 
@@ -244,11 +371,8 @@
         <script src="{{asset('assets/js/sb-admin-2.js')}}"></script>
 
        
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous"></script>
+
+
 
 @if(Session::has('client_added'))
 <script>
@@ -262,6 +386,63 @@
   toastr.error(' {{Session::get('client_deleted')}} ');
 </script>
     @endif
+
+
+
+    <script>
+$(document).ready(function () {
+/* When click New customer button */
+$('#new-client').click(function () {
+$('#btn-save').val("create-client");
+$('#client').trigger("reset");
+$('#clientCrudModal').html("Add New Article");
+$('#crud-modal').modal('show');
+});
+/* Edit customer */
+$('body').on('click', '#edit-client', function () {
+var client_id = $(this).data('id');
+$.get('clients/'+client_id+'/edit', function (data) {
+$('#clientCrudModal').html("Edit client");
+$('#btn-update').val("Update");
+$('#btn-save').prop('disabled',false);
+$('#crud-modal').modal('show');
+$('#clt_id').val(data.id);
+$('#e-nom').val(data.nom);
+$('#e-prenom').val(data.prenom);
+$('#e-email').val(data.email);
+$('#e-adresse').val(data.adresse);
+$('#e-pays').val(data.pays);
+$('#e-ville').val(data.ville);
+$('#e-code_postal').val(data.code_postal);
+$('#e-telephone').val(data.telephone);
+
+})
+});
+
+/* Delete customer */
+$('body').on('click', '#delete-client', function () {
+var article_id = $(this).data("id");
+var token = $("meta[name='csrf-token']").attr("content");
+confirm("Are You sure want to delete !");
+$.ajax({
+type: "DELETE",
+url: "/todolist/public/clients/"+client_id,
+data: {
+"id": article_id,
+"_token": token,
+},
+success: function (data) {
+$('#msg').html('Article entry deleted successfully');
+$("#client_id_" + client_id).remove();
+},
+error: function (data) {
+console.log('Error:', data);
+}
+});
+});
+});
+</script>
+
 
 </body>
 
